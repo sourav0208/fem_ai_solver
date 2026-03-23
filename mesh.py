@@ -1,6 +1,6 @@
 import numpy as np
 
-def generate_nodes(nx: int, ny: int, lx: float = 2.0, ly: float = 1.0) -> np.ndarray:
+def generate_nodes(nx: int, ny: int, lx: float = 1.0, ly: float = 1.0) -> np.ndarray:
     x = np.linspace(0.0, lx, nx)
     y = np.linspace(0.0, ly, ny)
 
@@ -40,6 +40,39 @@ def triangle_area(coords):
     area = 0.5 * abs((x2-x1)*(y3-y1) - (x3-x1)*(y2-y1))
 
     return area
+
+def local_stiffness(coords):
+    x1,y1 = coords[0]
+    x2,y2 = coords[1]
+    x3,y3 = coords[2]
+
+    area = triangle_area(coords)
+
+    b = np.array([y2-y3, y3-y1, y1-y2])
+    c = np.array([x3-x2, x1-x3, x2-x1])
+
+    ke = np.zeros((3,3))
+
+    for i in range(3):
+        for j in range(3):
+            ke[i,j] = (b[i] * b[j] + c[i] * c[j])/(4.0 * area)
+
+    return ke
+
+def assemble_global_stiffness(nodes, elements):
+    n_nodes = len(nodes)
+    K = np.zeros((n_nodes,n_nodes))
+
+    for element in elements:
+        coords = nodes[element]
+        ke = local_stiffness(coords)
+
+        for i in range(3):
+            for j in range(3):
+                K[element[i], element[j]] += ke[i,j]
+
+    return K
+
 
 
 
