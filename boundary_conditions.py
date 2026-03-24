@@ -13,3 +13,12 @@ def find_boundary_nodes(nodes, lx: float, ly: float, tol = 1e-12):
             boundary_nodes.append(i)
 
     return boundary_nodes
+
+
+def apply_dirichlet(K, f, boundary_nodes, value = 0.0):
+    for node in boundary_nodes:
+        K[node,:] = 0.0
+        K[node, node] = 1.0
+        f[node] = value
+
+    return K,f
