@@ -1,6 +1,6 @@
 import numpy as np
 
-def generate_nodes(nx: int, ny: int, lx: float = 1.0, ly: float = 1.0) -> np.ndarray:
+def generate_nodes(nx: int, ny: int, lx: float , ly: float ) -> np.ndarray:
     x = np.linspace(0.0, lx, nx)
     y = np.linspace(0.0, ly, ny)
 

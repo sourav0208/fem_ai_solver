@@ -5,8 +5,9 @@ import numpy as np
 
 def main():
     nx, ny = 5, 5
+    lx, ly = 1.0, 1.0
 
-    nodes = generate_nodes(nx, ny)
+    nodes = generate_nodes(nx, ny, lx, ly)
     elements = generate_elements(nx, ny)
 
     print("Nodes shape:", nodes.shape)
