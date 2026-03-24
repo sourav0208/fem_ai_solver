@@ -1,4 +1,4 @@
-from boundary_conditions import find_boundary_nodes, apply_dirichlet
+from boundary_conditions import find_boundary_nodes, apply_dirichlet, assemble_global_load
 from mesh import generate_elements, generate_nodes, triangle_area, local_stiffness, assemble_global_stiffness
 from plots import plot_nodes, plot_mesh
 import numpy as np
@@ -81,6 +81,16 @@ def main():
     u = np.linalg.solve(K,f)
     print("Solution vector shape:", u.shape)
     print("The U vector is:", u)
+
+    f =  assemble_global_load(nodes, elements, source=1.0)
+    boundary_nodes = find_boundary_nodes(nodes, lx, ly)
+    K,f = apply_dirichlet(K,f, boundary_nodes, value=0.0)
+    u = np.linalg.solve(K,f)
+    print("Solution vector shape:", u.shape)
+    print("The U vector is:", u)
+    print("Max value of U is:", np.max(u))
+
+
 
 
 

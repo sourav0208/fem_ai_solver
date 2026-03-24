@@ -1,5 +1,5 @@
 import numpy as np
-
+from mesh import triangle_area
 def find_boundary_nodes(nodes, lx: float, ly: float, tol = 1e-12):
     boundary_nodes = []
 
@@ -22,3 +22,20 @@ def apply_dirichlet(K, f, boundary_nodes, value = 0.0):
         f[node] = value
 
     return K,f
+
+def local_load(coords, source=1.0):
+    area = triangle_area(coords)
+    fe = source * area/3.0 *np.ones(3)
+    return fe
+
+def assemble_global_load(nodes, elements, source=1.0):
+    n_nodes = len(nodes)
+    f = np.zeros(n_nodes)
+    for element in elements:
+        coords = nodes[element]
+        fe = local_load(coords, source)
+
+        for i in range(3):
+            f[element[i]] += fe[i]
+
+    return f
