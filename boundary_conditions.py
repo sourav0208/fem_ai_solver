@@ -16,6 +16,8 @@ def find_boundary_nodes(nodes, lx: float, ly: float, tol = 1e-12):
 
 
 def apply_dirichlet(K, f, boundary_nodes, value = 0.0):
+    f = f.copy()
+    
     for node in boundary_nodes:
         K[node,:] = 0.0
         K[node, node] = 1.0

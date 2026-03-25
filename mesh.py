@@ -1,4 +1,7 @@
 import numpy as np
+import time
+from scipy.sparse import lil_matrix
+from scipy.sparse.linalg import spsolve
 
 def generate_nodes(nx: int, ny: int, lx: float , ly: float ) -> np.ndarray:
     x = np.linspace(0.0, lx, nx)
@@ -59,7 +62,7 @@ def local_stiffness(coords):
 
     return ke
 
-def assemble_global_stiffness(nodes, elements):
+def assemble_global_stiffness_dense(nodes, elements):
     n_nodes = len(nodes)
     K = np.zeros((n_nodes,n_nodes))
 
@@ -72,6 +75,20 @@ def assemble_global_stiffness(nodes, elements):
                 K[element[i], element[j]] += ke[i,j]
 
     return K
+
+def assemble_global_stiffness_sparse(nodes, elements):
+    n_nodes = len(nodes)
+    K = lil_matrix((n_nodes, n_nodes))
+
+    for element in elements:
+        coords = nodes[element]
+        ke = local_stiffness(coords)
+
+        for i in range(3):
+            for j in range(3):
+                K[element[i], element[j]] += ke[i,j]
+
+    return K.tocsr()
 
 
 
