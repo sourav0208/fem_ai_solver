@@ -105,8 +105,33 @@ def main():
     plot_solution(nodes, elements, u)
 
 
+def refinement_study():
+    lx=1.0
+    ly=1.0
+    mesh_size = [5,9,17,33,43,50]
+
+    for n in mesh_size:
+        nx, ny = n,n
+
+        nodes = generate_nodes(nx,ny,lx,ly)
+        elements = generate_elements(nx,ny)
+
+        K = assemble_global_stiffness(nodes, elements)
+        f = assemble_global_load(nodes, elements, source=1.0)
+        boundary_nodes = find_boundary_nodes(nodes,lx,ly)
+        K,f = apply_dirichlet(K,f,boundary_nodes)
+        u = np.linalg.solve(K,f)
+        max_u = np.max(u)
+        plot_nodes(nodes)
+        plot_mesh(nodes, elements)
+        plot_solution(nodes, elements, u)
+        print(f"Mesh {n}x{n}: max(u) = {max_u:.6f}")
+
+
+
 if __name__ == "__main__":
-    main()
+    #main()
+    refinement_study()
 
 
 

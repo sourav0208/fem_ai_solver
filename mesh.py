@@ -4,8 +4,8 @@ def generate_nodes(nx: int, ny: int, lx: float , ly: float ) -> np.ndarray:
     x = np.linspace(0.0, lx, nx)
     y = np.linspace(0.0, ly, ny)
 
-    print(x)
-    print(y)
+    #print(x)
+    #print(y)
 
     nodes = []
 
@@ -13,7 +13,7 @@ def generate_nodes(nx: int, ny: int, lx: float , ly: float ) -> np.ndarray:
         for i in range(nx):
             nodes.append([x[i], y[j]])
         
-    print(nodes)
+    #print(nodes)
 
     return np.array(nodes, dtype=float)
 
