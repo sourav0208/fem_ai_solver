@@ -1,6 +1,6 @@
 from boundary_conditions import find_boundary_nodes, apply_dirichlet, assemble_global_load
 from mesh import generate_elements, generate_nodes, triangle_area, local_stiffness, assemble_global_stiffness
-from plots import plot_nodes, plot_mesh
+from plots import plot_nodes, plot_mesh, plot_solution
 import numpy as np
 
 
@@ -90,6 +90,10 @@ def main():
     print("The U vector is:", u)
     print("Max value of U is:", np.max(u))
 
+    u_grid = u.reshape((ny,nx))
+    print("Solution as grid:")
+    print(u_grid)
+
 
 
 
@@ -98,6 +102,7 @@ def main():
 
     plot_nodes(nodes)
     plot_mesh(nodes, elements)
+    plot_solution(nodes, elements, u)
 
 
 if __name__ == "__main__":
