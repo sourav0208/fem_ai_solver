@@ -88,7 +88,7 @@ def assemble_global_stiffness_sparse(nodes, elements):
             for j in range(3):
                 K[element[i], element[j]] += ke[i,j]
 
-    return K.tocsr()
+    return K
 
 
 

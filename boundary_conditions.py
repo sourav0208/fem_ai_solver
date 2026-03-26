@@ -24,6 +24,18 @@ def apply_dirichlet(K, f, boundary_nodes, value = 0.0):
 
     return K,f
 
+def apply_dirichlet_sparse(K, f, boundary_nodes, value = 0.0):
+    f = f.copy()
+
+    for node in boundary_nodes:
+        K.rows[node] = [node]
+        K.data[node] = [1.0]
+        f[node] = value
+
+    return K,f
+
+
+
 def local_load(coords, source=1.0):
     area = triangle_area(coords)
     fe = source * area/3.0 *np.ones(3)
