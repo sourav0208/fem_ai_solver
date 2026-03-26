@@ -1,7 +1,7 @@
 from boundary_conditions import find_boundary_nodes, apply_dirichlet, assemble_global_load
 from mesh import generate_elements, generate_nodes, assemble_global_stiffness_dense
 from plots import plot_nodes, plot_mesh, plot_solution
-from helper import solve_problem
+from helper import solve_problem, benchmark_case
 import numpy as np
 
 
@@ -45,11 +45,19 @@ def refinement_study():
         plot_solution(nodes, elements, u)
         print(f"Mesh {n}x{n}: max(u) = {max_u:.6f}")
 
+def benchmark_study():
+    mesh_size = [5,9,17,33,43,50]
+    for n in mesh_size:
+        nx, ny = n,n
+        benchmark_case(nx,ny,lx=1.0,ly=1.0,source=1.0)
+
+
 
 
 if __name__ == "__main__":
     main()
     #refinement_study()
+    benchmark_study()
 
 
 
