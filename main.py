@@ -3,6 +3,7 @@ from mesh import generate_elements, generate_nodes, assemble_global_stiffness_de
 from plots import plot_nodes, plot_mesh, plot_solution
 from helper import solve_problem, benchmark_case
 import numpy as np
+import pandas as pd
 
 
 
@@ -27,7 +28,7 @@ def refinement_study():
     lx=1.0
     ly=1.0
     mesh_size = [5,9,17,33,43,50]
-
+    
     for n in mesh_size:
         nx, ny = n,n
 
@@ -47,12 +48,19 @@ def refinement_study():
 
 def benchmark_study():
     mesh_size = [5,9,17,33,43,50]
+    results = []
     for n in mesh_size:
         nx, ny = n,n
-        benchmark_case(nx,ny,lx=1.0,ly=1.0,source=1.0)
-
-
-
+        data= benchmark_case(nx,ny,lx=1.0,ly=1.0,source=1.0)
+        results.append(data)
+        
+    df = pd.DataFrame(results)
+    print("\nBenchmark Table:\n")
+    print(df)
+    df.to_csv("Benchmark_results.csv", index=True)
+    return df
+        
+        
 
 if __name__ == "__main__":
     main()

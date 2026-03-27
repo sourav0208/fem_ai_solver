@@ -97,10 +97,25 @@ def benchmark_case(nx, ny, lx=1.0,ly=1.0, source=1.0):
     print(f"Dense memory usage: {dense_mem_usage/1024:.2f} KB")
     print(f"Sparse memory usage: {sparse_mem_usage/1024:.2f} KB")
 
-    print(f"Reduction in memory usage for {nx}x{ny} nodes:{100*(1-(sparse_mem_usage/dense_mem_usage))} %")
+    memory_reduction = 100*(1-(sparse_mem_usage/dense_mem_usage))
+    faster_rate = dense_solve_time/sparse_solve_time
+    print(f"Reduction in memory usage for {nx}x{ny} nodes:{memory_reduction} %")
+    print(f"Sparse solution time is {faster_rate}x faster than Dense solution time for {nx}x{ny} mesh" )
 
     print("Max difference between dense and sparse solution:",
           np.max(np.abs(u_dense - u_sparse)))
+    
+    return{
+        "mesh": f"{nx}x{ny}",
+        "nodes": len(nodes),
+        "dense_memory_kb": dense_mem_usage/1024,
+        "sparse_memory_kb": sparse_mem_usage/1024,
+        "dense_solve_time": dense_solve_time,
+        "sparse_solve_time": sparse_solve_time,
+        "nonzeros": K_sparse.nnz,
+        "memory_reduction": memory_reduction,
+        "speedup_rate": faster_rate
+    }
 
     
 
